@@ -1,8 +1,8 @@
-# Bookmark Organizer CLI
+# 📚 Bookmark Clustering & Organization
 
-A powerful CLI tool for organizing Chrome bookmarks with AI-powered categorization using Google Gemini.
+A powerful tool for organizing Chrome bookmarks with AI-powered categorization using Google Gemini. Available as both a **CLI tool** and a **web application**.
 
-## Features
+## 🌟 Features
 
 - **Import & Flatten**: Load Chrome bookmarks from JSON or HTML format
 - **Clean & Deduplicate**: Normalize URLs and remove duplicates  
@@ -11,6 +11,27 @@ A powerful CLI tool for organizing Chrome bookmarks with AI-powered categorizati
 - **Folder Building**: Create organized folders with intelligent splitting
 - **Preview**: Review organization before applying changes
 - **Export**: Export to Chrome-compatible HTML format
+
+## 🚀 Quick Start
+
+### Web Application (Recommended)
+
+The easiest way to use the tool is through the **Streamlit web interface**:
+
+```powershell
+# Install dependencies
+pip install -e .
+pip install streamlit
+
+# Run the web app
+streamlit run app.py
+```
+
+Then open `http://localhost:8501` in your browser.
+
+### CLI Tool
+
+For command-line enthusiasts:
 
 ## Installation
 
@@ -152,17 +173,52 @@ export LLM_MODEL=gemini-1.5-pro
 bookmark-cli categorize --batch-size 20
 ```
 
-## Architecture
+## 📦 Deployment
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for comprehensive deployment guides:
+- Local testing
+- Streamlit Cloud (free hosting)
+- Docker containers
+- Railway, Heroku, Azure, Google Cloud Run
+
+## 🏗️ Architecture
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed technical documentation.
 
-## Troubleshooting
+## 🔧 Troubleshooting
 
 ### API Key Issues
 ```
 Error: Gemini API key not found!
 ```
 **Solution**: Ensure `.env` contains `GEMINI_API_KEY=your_key`
+
+### Port Already in Use
+```powershell
+# Use a different port
+streamlit run app.py --server.port=8502
+```
+
+### Memory Issues
+- Reduce batch size (20-30)
+- Process fewer bookmarks at once
+- Disable metadata fetching for faster processing
+
+## 📄 License
+
+MIT License - See LICENSE file for details
+
+## 🤝 Contributing
+
+Contributions welcome! Please open an issue or submit a pull request.
+
+## 📞 Support
+
+- Documentation: [README.md](README.md)
+- Deployment Guide: [DEPLOYMENT.md](DEPLOYMENT.md)
+- Architecture: [ARCHITECTURE.md](ARCHITECTURE.md)
+- Streamlit Features: [STREAMLIT_IMPLEMENTATION.md](STREAMLIT_IMPLEMENTATION.md)
+- Issues: [GitHub Issues](https://github.com/rop2024/bookmark-clustering/issues)
 
 ### Rate Limiting
 ```

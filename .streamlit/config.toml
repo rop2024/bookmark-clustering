@@ -1,0 +1,60 @@
+[server]
+# Maximum file upload size in MB
+maxUploadSize = 50
+
+# Maximum message size in MB
+maxMessageSize = 200
+
+# Enable CORS (set to true if needed for external APIs)
+enableCORS = false
+
+# Enable XSRF protection
+enableXsrfProtection = true
+
+# Server port (overridden by cloud platforms)
+port = 8501
+
+# Server address
+address = "localhost"
+
+[runner]
+# Enable magic commands
+magicEnabled = true
+
+# Fast reruns for better performance
+fastReruns = true
+
+# Don't fix matplotlib backend
+fixMatplotlib = false
+
+[client]
+# Show error details to users
+showErrorDetails = true
+
+# Toolbar mode (developer, viewer, minimal, auto)
+toolbarMode = "auto"
+
+[browser]
+# Don't gather usage stats
+gatherUsageStats = false
+
+# Server address (localhost for development)
+serverAddress = "localhost"
+
+# Server port
+serverPort = 8501
+
+[theme]
+# Custom theme (optional)
+primaryColor = "#FF4B4B"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F0F2F6"
+textColor = "#262730"
+font = "sans serif"
+
+[logger]
+# Logging level (error, warning, info, debug)
+level = "info"
+
+# Enable colored logs
+enableRichLogs = true
