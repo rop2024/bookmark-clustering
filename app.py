@@ -47,30 +47,46 @@ def normalize_and_deduplicate_cached(bookmarks: List[Dict]) -> tuple:
 
 # Page configuration
 st.set_page_config(
-    page_title="Bookmark Clustering",
-    page_icon="🔖",
+    page_title="BookmarkAI - Organize Your Bookmarks Intelligently",
+    page_icon="🎯",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
-# Custom CSS
+# Custom CSS for product-style interface
 st.markdown("""
     <style>
     .main-header {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #1f77b4;
+        font-size: 3rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: 0.5rem;
+    }
+    .tagline {
+        font-size: 1.2rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 3rem;
     }
     .step-header {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #2ca02c;
-        margin-top: 2rem;
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #333;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
     }
     .stProgress > div > div > div > div {
-        background-color: #1f77b4;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    }
+    .info-box {
+        background: #f0f7ff;
+        border-left: 4px solid #667eea;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -94,51 +110,51 @@ if 'processing_status' not in st.session_state:
         'export': False
     }
 
-# Main header
-st.markdown('<div class="main-header">🔖 Bookmark Clustering with AI</div>', unsafe_allow_html=True)
+# Main header with product branding
+st.markdown('<div class="main-header">🎯 BookmarkAI</div>', unsafe_allow_html=True)
+st.markdown('<div class="tagline">Organize thousands of bookmarks in minutes with AI-powered categorization</div>', unsafe_allow_html=True)
 
-# Sidebar configuration
+# Sidebar configuration (collapsed by default, for advanced settings)
 with st.sidebar:
-    st.header("⚙️ Configuration")
+    st.header("⚙️ Settings")
     
-    # API Key input
-    api_key = st.text_input(
-        "Gemini API Key",
-        type="password",
-        value=settings.gemini_api_key or "",
-        help="Get your free API key from https://makersuite.google.com/app/apikey"
-    )
+    with st.expander("🔑 API Configuration", expanded=False):
+        api_key = st.text_input(
+            "API Key",
+            type="password",
+            value=settings.gemini_api_key or "",
+            help="Your AI service API key"
+        )
+        if not api_key:
+            st.warning("⚠️ API key required")
+            st.markdown("[Get free API key →](https://makersuite.google.com/app/apikey)")
     
-    # Model selection
-    model = st.selectbox(
-        "Model",
-        ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-flash-latest"],
-        index=0,
-        help="Select the Gemini model to use"
-    )
-    
-    # Batch size
-    batch_size = st.slider(
-        "Batch Size",
-        min_value=10,
-        max_value=100,
-        value=50,
-        step=10,
-        help="Number of bookmarks per API call"
-    )
-    
-    # Fetch metadata toggle
-    fetch_metadata = st.checkbox(
-        "Fetch Metadata",
-        value=True,
-        help="Fetch titles and descriptions from URLs"
-    )
+    with st.expander("⚙️ Advanced Options", expanded=False):
+        # Model selection (hidden from users)
+        model = "gemini-2.5-flash"  # Default, not exposed to users
+        
+        # Batch size
+        batch_size = st.slider(
+            "Processing Batch Size",
+            min_value=20,
+            max_value=100,
+            value=50,
+            step=10,
+            help="Larger batches = faster processing"
+        )
+        
+        # Fetch metadata toggle
+        fetch_metadata = st.checkbox(
+            "Fetch Page Metadata",
+            value=True,
+            help="Automatically fetch titles and descriptions from URLs (recommended)"
+        )
     
     st.divider()
     
     # Progress indicator
-    st.subheader("📊 Progress")
-    steps = ["Import", "Clean", "Categorize", "Export"]
+    st.subheader("📈 Workflow Progress")
+    steps = ["Upload", "Clean", "Organize", "Export"]
     for i, step in enumerate(steps, 1):
         if i < st.session_state.current_step:
             st.success(f"✅ {step}")
@@ -146,20 +162,33 @@ with st.sidebar:
             st.info(f"⏳ {step}")
         else:
             st.text(f"⏸️ {step}")
-
-# Main content
-tab1, tab2, tab3, tab4 = st.tabs(["📥 Import", "🧹 Clean", "🤖 Categorize", "📤 Export"])
-
-# Tab 1: Import
-with tab1:
-    st.markdown('<div class="step-header">Step 1: Import Bookmarks</div>', unsafe_allow_html=True)
     
-    st.info("Upload your Chrome bookmarks file (HTML or JSON format)")
+    st.divider()
+    st.caption("Made with ❤️ by your development team")
+
+# Main content - Product workflow
+tab1, tab2, tab3, tab4 = st.tabs(["📤 Upload", "✨ Clean", "🎯 Organize", "💾 Download"])
+
+# Tab 1: Upload
+with tab1:
+    st.markdown('<div class="step-header">Upload Your Bookmarks</div>', unsafe_allow_html=True)
+    
+    # How-to instructions
+    with st.expander("📖 How to export bookmarks from Chrome", expanded=False):
+        st.markdown("""
+        1. Open Chrome and press `Ctrl+Shift+O` (Bookmark Manager)
+        2. Click the **⋮** menu (top right)
+        3. Select **Export bookmarks**
+        4. Save the file and upload it here
+        """)
+    
+    st.markdown('<div class="info-box">📁 <strong>Drag and drop</strong> your bookmarks file below, or click to browse</div>', unsafe_allow_html=True)
     
     uploaded_file = st.file_uploader(
-        "Choose a bookmarks file",
+        "Choose your bookmarks file",
         type=["html", "json"],
-        help="Export from Chrome: Bookmarks → Bookmark Manager → ⋮ → Export bookmarks"
+        help="Supports both HTML and JSON formats",
+        label_visibility="collapsed"
     )
     
     if uploaded_file:
@@ -184,26 +213,33 @@ with tab1:
                 st.session_state.current_step = 2
                 st.session_state.processing_status['import'] = True
                 
-                st.success(f"✅ Loaded {len(bookmarks)} bookmarks!")
+                st.success(f"🎉 Successfully loaded **{len(bookmarks):,}** bookmarks from your file!")
                 
                 # Show preview
-                st.subheader("Preview")
+                st.subheader("👀 Quick Preview")
                 df = pd.DataFrame(bookmarks[:10])
                 st.dataframe(df[['title', 'url', 'parent']] if 'parent' in df.columns else df[['title', 'url']], use_container_width=True)
+                
+                st.info("➡️ **Next step:** Go to the 'Clean' tab to remove duplicates")
                 
             except Exception as e:
                 st.error(f"Error loading bookmarks: {str(e)}")
 
 # Tab 2: Clean
 with tab2:
-    st.markdown('<div class="step-header">Step 2: Clean & Deduplicate</div>', unsafe_allow_html=True)
+    st.markdown('<div class="step-header">Clean Your Bookmarks</div>', unsafe_allow_html=True)
+    st.markdown("Remove duplicates and fix broken URLs automatically")
     
     if st.session_state.bookmarks_raw is None:
-        st.warning("⚠️ Please import bookmarks first")
+        st.warning("⚠️ Please upload bookmarks first (see Upload tab)")
     else:
-        st.info(f"Total bookmarks: {len(st.session_state.bookmarks_raw)}")
+        col1, col2 = st.columns([2, 1])
+        with col1:
+            st.info(f"📊 You have **{len(st.session_state.bookmarks_raw):,}** bookmarks to clean")
+        with col2:
+            st.empty()
         
-        if st.button("🧹 Clean Bookmarks", type="primary"):
+        if st.button("✨ Start Cleaning", type="primary", use_container_width=True):
             progress_bar = st.progress(0)
             progress_text = st.empty()
             
@@ -233,29 +269,32 @@ with tab2:
                 with col3:
                     st.metric("Unique", len(cleaned))
                 
-                st.success(f"✅ Bookmarks cleaned! Total: {len(cleaned)}, Duplicates removed: {len(removed)}")
+                st.success(f"✅ **Cleaning complete!** Your bookmarks are now deduplicated and ready to organize.")
                 
                 if removed:
-                    with st.expander("View removed duplicates"):
+                    with st.expander(f"🗑️ View {len(removed)} removed duplicates"):
                         df_removed = pd.DataFrame(removed)
                         st.dataframe(df_removed[['title', 'url']], use_container_width=True)
+                
+                st.info("➡️ **Next step:** Go to the 'Organize' tab to categorize with AI")
                 
             except Exception as e:
                 st.error(f"Error cleaning bookmarks: {str(e)}")
 
-# Tab 3: Categorize
+# Tab 3: Organize
 with tab3:
-    st.markdown('<div class="step-header">Step 3: AI Categorization</div>', unsafe_allow_html=True)
+    st.markdown('<div class="step-header">Organize with AI</div>', unsafe_allow_html=True)
+    st.markdown("Let AI analyze and categorize your bookmarks into smart folders")
     
     if st.session_state.bookmarks_cleaned is None:
-        st.warning("⚠️ Please clean bookmarks first")
+        st.warning("⚠️ Please clean your bookmarks first (see Clean tab)")
     else:
-        st.info(f"Ready to categorize {len(st.session_state.bookmarks_cleaned)} bookmarks")
+        st.info(f"🤖 Ready to organize **{len(st.session_state.bookmarks_cleaned):,}** bookmarks into smart categories")
         
         if not api_key:
-            st.error("❌ Please enter your Gemini API key in the sidebar")
+            st.error("🔑 Please configure your API key in the sidebar (Settings → API Configuration)")
         else:
-            if st.button("🤖 Categorize with AI", type="primary"):
+            if st.button("🎯 Start AI Organization", type="primary", use_container_width=True):
                 progress_bar = st.progress(0)
                 progress_text = st.empty()
                 
@@ -364,13 +403,15 @@ with tab3:
                     
                     # Complete
                     progress_bar.progress(1.0)
-                    progress_text.text("✅ Categorization complete!")
-                    st.success("✅ Categorization complete!")
+                    progress_text.text("✅ Organization complete!")
+                    st.balloons()  # Celebration!
+                    st.success(f"🎉 **Success!** Your {len(categorized):,} bookmarks have been organized into smart folders!")
                     
                     # Generate and display summary statistics
                     from bookmark_cli.preview import generate_preview
                     
-                    st.subheader("📊 Summary Statistics")
+                    st.markdown("### 📊 Organization Summary")
+                    st.info("➡️ **Next step:** Go to the 'Download' tab to export your organized bookmarks")
                     
                     # Calculate folder distribution
                     folders = {}
@@ -428,19 +469,35 @@ with tab3:
                     import traceback
                     st.code(traceback.format_exc())
 
-# Tab 4: Export
+# Tab 4: Download
 with tab4:
-    st.markdown('<div class="step-header">Step 4: Export Results</div>', unsafe_allow_html=True)
+    st.markdown('<div class="step-header">Download Your Organized Bookmarks</div>', unsafe_allow_html=True)
+    st.markdown("Export your newly organized bookmarks and import them back into Chrome")
     
     if st.session_state.bookmarks_categorized is None:
-        st.warning("⚠️ Please categorize bookmarks first")
+        st.warning("⚠️ Please organize your bookmarks first (see Organize tab)")
     else:
-        st.info(f"Ready to export {len(st.session_state.bookmarks_categorized)} categorized bookmarks")
+        st.success(f"🎉 **{len(st.session_state.bookmarks_categorized):,}** bookmarks organized and ready to download!")
+        
+        # How-to import back to Chrome
+        with st.expander("📖 How to import organized bookmarks back to Chrome", expanded=False):
+            st.markdown("""
+            1. Download the HTML file below
+            2. Open Chrome and press `Ctrl+Shift+O` (Bookmark Manager)
+            3. Click the **⋮** menu (top right)
+            4. Select **Import bookmarks**
+            5. Choose the downloaded file
+            
+            🎉 Your bookmarks will appear organized into smart folders!
+            """)
+        
+        st.markdown("### 💾 Download Options")
         
         col1, col2 = st.columns(2)
         
         with col1:
-            if st.button("📥 Download HTML", type="primary"):
+            st.markdown("**For Chrome** (Recommended)")
+            if st.button("🌐 Prepare Chrome Import File", type="primary", use_container_width=True):
                 try:
                     # Generate HTML
                     with tempfile.NamedTemporaryFile(delete=False, suffix='.html', mode='w', encoding='utf-8') as tmp_file:
@@ -454,47 +511,50 @@ with tab4:
                         os.unlink(tmp_file.name)
                     
                     st.download_button(
-                        label="💾 Download organized_bookmarks.html",
+                        label="⬇️ Download organized_bookmarks.html",
                         data=html_content,
                         file_name="organized_bookmarks.html",
-                        mime="text/html"
+                        mime="text/html",
+                        use_container_width=True
                     )
                     
-                    st.success("✅ HTML generated! Click the button above to download.")
+                    st.success("✅ Ready! Click the download button above")
                     
                 except Exception as e:
-                    st.error(f"Error exporting: {str(e)}")
+                    st.error(f"Error preparing file: {str(e)}")
         
         with col2:
-            if st.button("📥 Download JSON"):
+            st.markdown("**For Backup** (JSON Format)")
+            if st.button("📊 Prepare JSON Backup", use_container_width=True):
                 try:
                     json_content = json.dumps(st.session_state.bookmarks_categorized, indent=2, ensure_ascii=False)
                     
                     st.download_button(
-                        label="💾 Download bookmarks_categorized.json",
+                        label="⬇️ Download bookmarks.json",
                         data=json_content,
-                        file_name="bookmarks_categorized.json",
-                        mime="application/json"
+                        file_name="bookmarks_organized.json",
+                        mime="application/json",
+                        use_container_width=True
                     )
                     
-                    st.success("✅ JSON generated! Click the button above to download.")
+                    st.success("✅ Ready! Click the download button above")
                     
                 except Exception as e:
-                    st.error(f"Error exporting JSON: {str(e)}")
+                    st.error(f"Error preparing backup: {str(e)}")
         
         # Preview
-        st.subheader("Preview")
+        st.markdown("### 👀 Preview Your Organized Bookmarks")
         if st.session_state.bookmarks_categorized:
             df = pd.DataFrame(st.session_state.bookmarks_categorized)
             columns = ['title', 'folder', 'tags', 'url']
             display_cols = [col for col in columns if col in df.columns]
-            st.dataframe(df[display_cols], use_container_width=True)
+            st.dataframe(df[display_cols], use_container_width=True, height=400)
 
 # Footer
 st.divider()
 st.markdown("""
-    <div style='text-align: center; color: gray;'>
-        <p>Built with ❤️ using Streamlit and Google Gemini AI</p>
-        <p>Get your free API key at <a href='https://makersuite.google.com/app/apikey' target='_blank'>Google AI Studio</a></p>
+    <div style='text-align: center; color: #999; padding: 2rem 0;'>
+        <p style='font-size: 0.9rem;'>🎯 <strong>BookmarkAI</strong> - Your intelligent bookmark organizer</p>
+        <p style='font-size: 0.8rem; margin-top: 0.5rem;'>Powered by advanced AI technology</p>
     </div>
     """, unsafe_allow_html=True)
