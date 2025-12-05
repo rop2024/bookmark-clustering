@@ -18,10 +18,18 @@ A powerful tool for organizing Chrome bookmarks with AI-powered categorization u
 
 The easiest way to use the tool is through the **Streamlit web interface**:
 
+**For End Users (Using Hosted Version):**
+Just visit the hosted app - no setup required! API access is included.
+
+**For Developers (Running Locally):**
+
 ```powershell
 # Install dependencies
 pip install -e .
 pip install streamlit
+
+# Set up your API key in .env file
+echo "GEMINI_API_KEY=your_key_here" > .env
 
 # Run the web app
 streamlit run app.py
@@ -31,7 +39,7 @@ Then open `http://localhost:8501` in your browser.
 
 ### CLI Tool
 
-For command-line enthusiasts:
+For developers and command-line enthusiasts:
 
 ## Installation
 
@@ -44,9 +52,11 @@ cd bookmark-cli
 pip install -e .
 ```
 
-## Setup
+## Setup (For CLI or Local Development)
 
-1. **Get a Gemini API Key**
+> **Note:** If you're using the hosted web app, no setup is required! API access is included.
+
+1. **Get a Gemini API Key** (CLI/Development only)
    - Visit https://makersuite.google.com/app/apikey
    - Create a free API key (no credit card required)
 

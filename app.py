@@ -118,18 +118,10 @@ st.markdown('<div class="tagline">Organize thousands of bookmarks in minutes wit
 with st.sidebar:
     st.header("⚙️ Settings")
     
-    with st.expander("🔑 API Configuration", expanded=False):
-        api_key = st.text_input(
-            "API Key",
-            type="password",
-            value=settings.gemini_api_key or "",
-            help="Your AI service API key"
-        )
-        if not api_key:
-            st.warning("⚠️ API key required")
-            st.markdown("[Get free API key →](https://makersuite.google.com/app/apikey)")
+    # Use API key from environment (developer's key)
+    api_key = settings.gemini_api_key
     
-    with st.expander("⚙️ Advanced Options", expanded=False):
+    with st.expander("⚙️ Processing Options", expanded=False):
         # Model selection (hidden from users)
         model = "gemini-2.5-flash"  # Default, not exposed to users
         
@@ -292,9 +284,10 @@ with tab3:
         st.info(f"🤖 Ready to organize **{len(st.session_state.bookmarks_cleaned):,}** bookmarks into smart categories")
         
         if not api_key:
-            st.error("🔑 Please configure your API key in the sidebar (Settings → API Configuration)")
-        else:
-            if st.button("🎯 Start AI Organization", type="primary", use_container_width=True):
+            st.error("⚠️ Service configuration error. Please contact support.")
+            st.stop()
+        
+        if st.button("🎯 Start AI Organization", type="primary", use_container_width=True):
                 progress_bar = st.progress(0)
                 progress_text = st.empty()
                 
@@ -555,6 +548,7 @@ st.divider()
 st.markdown("""
     <div style='text-align: center; color: #999; padding: 2rem 0;'>
         <p style='font-size: 0.9rem;'>🎯 <strong>BookmarkAI</strong> - Your intelligent bookmark organizer</p>
-        <p style='font-size: 0.8rem; margin-top: 0.5rem;'>Powered by advanced AI technology</p>
+        <p style='font-size: 0.8rem; margin-top: 0.5rem;'>Powered by advanced AI technology • Free to use</p>
+        <p style='font-size: 0.75rem; margin-top: 0.5rem; color: #bbb;'>Made with ❤️ for bookmark organization</p>
     </div>
     """, unsafe_allow_html=True)

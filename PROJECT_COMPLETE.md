@@ -20,6 +20,7 @@
 - Statistics dashboard with charts
 - HTML/JSON export with download buttons
 - Session management and caching
+- **Pre-configured API access** (users don't need their own API key)
 
 ### 3. **Deployment Infrastructure** (New)
 - Docker containerization

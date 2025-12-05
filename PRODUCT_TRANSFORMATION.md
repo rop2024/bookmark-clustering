@@ -28,22 +28,27 @@ Your Streamlit app has been transformed from a **developer tool** into a **polis
 
 ## 🔒 Hidden Technical Details
 
-### API Configuration (Now in Collapsed Sidebar)
+### API Configuration - Completely Transparent to Users
 
-**Before:** API key and model visible on main page
-**After:** Hidden in Settings → API Configuration (collapsed by default)
+**Before:** Users had to provide their own API key
+**After:** ✅ **API key pre-configured** - users don't need their own key!
 
 ```
-Settings
-  └─ 🔑 API Configuration (expandable)
-       ├─ API Key (password field)
-       └─ Link to get free key
-  └─ ⚙️ Advanced Options (expandable)
+Settings (Collapsed by default)
+  └─ ⚙️ Processing Options (expandable)
        ├─ Processing Batch Size
        └─ Fetch Page Metadata toggle
 ```
 
-**Model Selection:** Completely hidden - uses `gemini-2.5-flash` by default (no user choice needed)
+**What's Hidden:**
+- ❌ No API key input field
+- ❌ No model selection dropdown
+- ❌ No technical configuration required
+
+**What Happens:**
+- ✅ Developer's API key loaded from `.env` automatically
+- ✅ Uses `gemini-2.5-flash` by default
+- ✅ Users just upload and go - no setup required!
 
 ---
 
@@ -88,7 +93,8 @@ Easy    Automatic   AI      Chrome-ready
 
 ### 2. **No Technical Knowledge Required**
 - No mention of "LLM", "Gemini", "model selection"
-- API configuration hidden but accessible
+- ✅ **Zero configuration** - API access included
+- ✅ **No API key required** from users
 - Smart defaults (batch size, metadata fetching)
 
 ### 3. **Clear Progress Tracking**
@@ -134,11 +140,22 @@ Easy    Automatic   AI      Chrome-ready
 
 ## 🚀 Running the Product
 
+### For End Users (Production)
+Just visit the hosted URL - no setup required!
+
+### For Developers (Local Testing)
+
+1. **Set up API key in `.env`:**
+```bash
+GEMINI_API_KEY=your_api_key_here
+```
+
+2. **Run the app:**
 ```powershell
 streamlit run app.py
 ```
 
-**URL:** http://localhost:8501
+3. **Visit:** http://localhost:8501
 
 **What Users See:**
 1. Clean, professional landing page
@@ -151,11 +168,14 @@ streamlit run app.py
 
 ## 📦 What's Still Available (But Hidden)
 
-All technical features are still accessible in the sidebar:
-- API key configuration
-- Batch size adjustment
-- Metadata fetching toggle
-- Model selection (hardcoded to best default)
+Technical features accessible in the sidebar (for developers):
+- ✅ Batch size adjustment
+- ✅ Metadata fetching toggle
+- ✅ Model selection (hardcoded to best default)
+
+**Removed from UI:**
+- ❌ API key input (uses developer's key from `.env`)
+- ❌ Model dropdown (automatic selection)
 
 ---
 
@@ -182,13 +202,38 @@ The app is now ready to deploy to Streamlit Cloud as a **public product**:
 
 ---
 
+## 🔐 API Key Management
+
+### For Production Deployment
+
+**Streamlit Cloud:**
+1. Go to App Settings → Secrets
+2. Add your API key:
+   ```toml
+   GEMINI_API_KEY = "your_api_key_here"
+   ```
+3. Users access the app without needing their own key
+
+**Docker/Self-Hosted:**
+```bash
+docker run -e GEMINI_API_KEY="your_key" bookmark-clustering
+```
+
+**Important:** 
+- ✅ Your API key is secure (environment variable)
+- ✅ Users don't see or need to know about API keys
+- ✅ Monitor usage through Google AI Studio dashboard
+- ⚠️ Set rate limits if needed for cost control
+
+---
+
 ## 📈 Next Steps for Product Launch
 
 ### Optional Enhancements:
 1. **Landing Page**: Add before/after examples
 2. **Demo Video**: Screen recording of workflow
 3. **Testimonials**: User feedback section
-4. **Pricing Tiers**: Free vs Premium (future)
+4. **Rate Limiting**: Add usage quotas per IP/session
 5. **Analytics**: Track usage (Streamlit Cloud provides this)
 6. **Custom Domain**: Point your domain to Streamlit app
 
