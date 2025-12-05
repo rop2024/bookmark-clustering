@@ -48,6 +48,14 @@ env/
 # HTML Files (Bookmark exports/imports)
 *.html
 
+# Documentation Files (Internal development notes)
+ARCHITECTURE.md
+DEPLOYMENT.md
+PRODUCT_TRANSFORMATION.md
+PROJECT_COMPLETE.md
+SAAS_MODEL.md
+STREAMLIT_IMPLEMENTATION.md
+
 # Bookmark Data Files
 bookmarks_raw.json
 bookmarks_cleaned.json
