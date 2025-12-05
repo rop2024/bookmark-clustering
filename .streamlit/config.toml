@@ -5,9 +5,6 @@ maxUploadSize = 50
 # Maximum message size in MB
 maxMessageSize = 200
 
-# Enable CORS (set to true if needed for external APIs)
-enableCORS = false
-
 # Enable XSRF protection
 enableXsrfProtection = true
 
@@ -23,9 +20,6 @@ magicEnabled = true
 
 # Fast reruns for better performance
 fastReruns = true
-
-# Don't fix matplotlib backend
-fixMatplotlib = false
 
 [client]
 # Show error details to users
@@ -55,6 +49,3 @@ font = "sans serif"
 [logger]
 # Logging level (error, warning, info, debug)
 level = "info"
-
-# Enable colored logs
-enableRichLogs = true
